@@ -1,8 +1,8 @@
 # MkDocs Configuration for Claude Code Agent 设计教材
 
-docs_dir: .
-site_name: Claude Code Agent 设计教材
-site_description: 基于 Claude Code 泄露源码的深度架构分析，编写 Agent 设计教材
+docs_dir: docs
+site_dir: site
+site_name: Claude Code Agent 设计教材 基于 Claude Code 泄露源码的深度架构分析，编写 Agent 设计教材
 site_author: Claude Code Analysis Team
 site_url: https://a576378368.github.io/cc-analysis/
 site_dir: site
@@ -93,8 +93,8 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
