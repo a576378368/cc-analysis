@@ -1,0 +1,33 @@
+# GitHub Pages Jekyll Configuration
+# Claude Code Agent 设计教材
+
+title: Claude Code Agent 设计教材
+description: 基于 Claude Code 泄露源码的深度分析，编写 Agent 设计教材
+author: Claude Code Analysis Team
+
+# Jekyll 配置
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-relative-links
+  - jekyll-seo-tag
+
+# GitHub Pages 配置
+repository: liuup/claude-code-analysis
+relative_links:
+  enabled: true
+  collections: true
+
+# 输出配置
+permalink: /:title/
+future: true
+
+# Markdown 配置
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_classes: true
+
+# 标题配置
+encoding: utf-8

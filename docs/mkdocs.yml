@@ -1,0 +1,136 @@
+# MkDocs Configuration for Claude Code Agent 设计教材
+
+site_name: Claude Code Agent 设计教材
+site_description: 基于 Claude Code 泄露源码的深度架构分析，编写 Agent 设计教材
+site_author: Claude Code Analysis Team
+site_url: https://a576378368.github.io/cc-analysis/
+
+repo_name: a576378368/cc-analysis
+repo_url: https://github.com/a576378368/cc-analysis
+
+# Navigation
+nav:
+  - 首页: index.md
+  - 第一章：架构总览: 01-architecture/README.md
+  - 第二章：程序入口与初始化: 02-entrypoint/README.md
+  - 第三章：Query/Agent 执行内核: 03-query-engine/README.md
+  - 第四章：工具系统设计与实现: 04-tools/README.md
+  - 第五章：记忆系统架构: 05-memory/README.md
+  - 第六章：MCP 协议实现: 06-mcp/README.md
+  - 第七章：Skills 机制: 07-skills/README.md
+  - 第八章：Sandbox 安全机制: 08-sandbox/README.md
+  - 第九章：UI 组件架构: 09-ui-components/README.md
+  - 第十章：多Agent系统: 10-multi-agent/README.md
+  - 附录:
+    - A: Context 上下文管理: appendix-a-context-management/README.md
+    - B: Session Storage 持久化: appendix-b-session-storage/README.md
+    - C: 隐私保护与数据处理: appendix-c-privacy/README.md
+    - D: Prompt 管理机制: appendix-d-prompt-management/README.md
+    - E: 竞品对比分析: appendix-e-competitive-comparison/README.md
+    - G: 源码文件树详解: appendix-g-src-file-tree/README.md
+
+# Theme
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  font:
+    text: 思源黑体
+    code: 思源黑体
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+
+# Plugins
+plugins:
+  - search:
+      lang:
+        - en
+        - ja
+        - zh
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+  - glightbox
+
+# Markdown extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: liuup
+      repo: claude-code-analysis
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Social links
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/a576378368/cc-analysis
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/Fried_rice
+
+# Analytics (optional)
+# analytics:
+#   provider: google
+#   property: G-XXXXXXXXXX
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Preview
+remote_branch: main
+remote_name: origin
