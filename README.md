@@ -1,68 +1,134 @@
 # Claude Code Agent 设计教材
 
-基于 Claude Code 泄露源码的深度架构分析
+> 基于 Claude Code 泄露源码的深度架构分析
+
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Source Files](https://img.shields.io/badge/Source%20Files-1902-green)
+![Lines of Code](https://img.shields.io/badge/Lines-513K-orange)
+
+---
 
 ## 事件背景
 
-2026年3月31日，安全研究者 [Chaofan Shou](https://x.com/Fried_rice) 发现 Anthropic 发布到 npm 的 Claude Code 包中未删除 source map 文件，导致完整 TypeScript 源码泄露（共 1902 个源文件，513,237 行代码）。
+2026年3月31日，安全研究者 [Chaofan Shou](https://x.com/Fried_rice) 发现 Anthropic 发布到 npm 的 Claude Code 包中**未删除 source map 文件**，导致完整 TypeScript 源码泄露：
 
-## 在线文档
+- **1902 个** 源文件
+- **513,237 行** 代码
 
-**阅读完整教材**：[https://a576378368.github.io/cc-analysis/](https://a576378368.github.io/cc-analysis/)
+本教材基于泄露源码进行深度分析，系统讲解现代 AI Agent 的核心设计模式与工程实现。
 
-文档使用 MkDocs Material 主题构建，支持深色模式、代码高亮、Mermaid 图表。
+## 在线阅读
 
-## 教材结构
+**访问地址**：[https://a576378368.github.io/cc-analysis/](https://a576378368.github.io/cc-analysis/)
+
+> 文档使用 MkDocs Material 主题构建，支持深色模式、代码高亮、Mermaid 图表。
+
+---
+
+## 教材目录
+
+### 核心章节
 
 | 章节 | 主题 | 说明 |
 |:-----|:-----|:-----|
-| 第一章 | [架构总览](docs/01-architecture/) | 六层架构设计、数据流总览 |
-| 第二章 | [程序入口与初始化](docs/02-entrypoint/) | CLI 分流、主程序入口 |
-| 第三章 | [Query/Agent 执行内核](docs/03-query-engine/) | 查询引擎、上下文管理 |
-| 第四章 | [工具系统设计与实现](docs/04-tools/) | 工具基类、权限系统 |
-| 第五章 | [记忆系统架构](docs/05-memory/) | Auto/Session/Agent/Team 四层记忆 |
-| 第六章 | [MCP 协议实现](docs/06-mcp/) | MCP 客户端、传输层、OAuth |
-| 第七章 | [Skills 机制](docs/07-skills/) | 技能加载、Shell 执行 |
-| 第八章 | [Sandbox 安全机制](docs/08-sandbox/) | 沙箱隔离、权限验证 |
-| 第九章 | [UI 组件架构](docs/09-ui-components/) | React 组件设计 |
-| 第十章 | [多Agent系统](docs/10-multi-agent/) | 子Agent、Team协作 |
+| [第一章](01-architecture/) | 架构总览 | 六层架构设计、数据流总览、模块关系 |
+| [第二章](02-entrypoint/) | 程序入口与初始化 | CLI 分流、主程序入口、环境初始化 |
+| [第三章](03-query-engine/) | Query/Agent 执行内核 | 查询引擎、上下文管理、Agent SDK |
+| [第四章](04-tools/) | 工具系统设计与实现 | 工具基类、权限系统、工具调度 |
+| [第五章](05-memory/) | 记忆系统架构 | Auto/Session/Agent/Team 四层记忆 |
+| [第六章](06-mcp/) | MCP 协议实现 | MCP 客户端、传输层、OAuth 认证 |
+| [第七章](07-skills/) | Skills 机制 | 技能加载、Shell 执行，内建技能 |
+| [第八章](08-sandbox/) | Sandbox 安全机制 | 沙箱隔离、权限验证、路径验证 |
+| [第九章](09-ui-components/) | UI 组件架构 | React 组件设计、控制面组件 |
+| [第十章](10-multi-agent/) | 多Agent系统 | 子Agent、Team协作、Swarm架构 |
 
 ### 附录
 
-- [A: Context 上下文管理](docs/appendix-a-context-management/)
-- [B: Session Storage 持久化](docs/appendix-b-session-storage/)
-- [C: 隐私保护与数据处理](docs/appendix-c-privacy/)
-- [D: Prompt 管理机制](docs/appendix-d-prompt-management/)
-- [E: 竞品对比分析](docs/appendix-e-competitive-comparison/)
-- [G: 源码文件树详解](docs/appendix-g-src-file-tree/)
+| 附录 | 主题 |
+|:-----|:-----|
+| [A](appendix-a-context-management/) | Context 上下文管理 |
+| [B](appendix-b-session-storage/) | Session Storage 持久化 |
+| [C](appendix-c-privacy/) | 隐私保护与数据处理 |
+| [D](appendix-d-prompt-management/) | Prompt 管理机制 |
+| [E](appendix-e-competitive-comparison/) | 竞品对比分析 |
+| [G](appendix-g-src-file-tree/) | 源码文件树详解 |
+
+---
+
+## 核心设计亮点
+
+### 分层架构
+
+```
+CLI 引导层 → TUI/REPL 交互层 → Query/Agent 执行内核 → Tool/Permission 层 → Memory/Persistence 层 → MCP/Remote/Swarm 扩展层
+```
+
+### 多层记忆系统
+
+- **Auto Memory** - 长期记忆，跨 session
+- **Session Memory** - 当前会话摘要
+- **Agent Memory** - Agent 角色绑定记忆
+- **Team Memory** - 团队共享记忆
+
+### 安全设计
+
+- 沙箱进程隔离（bwrap/macOS Runtime）
+- 工具权限控制（ask/auto/bypass）
+- 路径验证与限制
+- OAuth 认证
+
+---
+
+## 技术栈
+
+| 层级 | 技术 |
+|:-----|:-----|
+| 文档构建 | MkDocs + Material |
+| 文档格式 | Markdown |
+| 图表 | Mermaid |
+| 源码语言 | TypeScript |
+
+---
+
+## 快速开始
+
+### 在线阅读
+
+直接访问：[https://a576378368.github.io/cc-analysis/](https://a576378368.github.io/cc-analysis/)
+
+### 本地预览
+
+```bash
+# 克隆仓库
+git clone https://github.com/a576378368/cc-analysis.git
+cd cc-analysis/docs
+
+# 安装依赖
+pip install mkdocs-material mkdocstrings mkdocs-glightbox
+
+# 启动本地服务器
+mkdocs serve
+
+# 访问 http://localhost:8000
+```
+
+---
 
 ## 目录结构
 
 ```
 cc-analysis/
-├── README.md           # 本文件
-├── cc_src/            # Claude Code 泄露源码（35MB）
-├── docs/              # MkDocs 文档源文件
-│   ├── 01-architecture/
-│   ├── 02-entrypoint/
-│   ├── 03-query-engine/
-│   ├── ...（十章 + 附录）
-│   ├── src/           # 源码副本（已弃用，请使用 cc_src/）
-│   └── mkdocs.yml   # MkDocs 配置
-└── docs/site/        # GitHub Pages 构建输出
-```
-
-## 源码
-
-源码位于 `cc_src/` 目录，共 1902 个 TypeScript 文件。
-
-## 本地预览
-
-```bash
-cd docs
-pip install mkdocs-material mkdocstrings mkdocs-glightbox
-mkdocs serve
-# 访问 http://localhost:8000
+├── README.md              # 本文件
+├── cc_src/               # Claude Code 泄露源码（35MB）
+└── docs/                 # 文档源文件
+    ├── 01-architecture/  # 第一章
+    ├── 02-entrypoint/    # 第二章
+    ├── ...
+    ├── 10-multi-agent/    # 第十章
+    ├── appendix-*/       # 附录
+    ├── index.md          # MkDocs 首页
+    └── mkdocs.yml        # MkDocs 配置
 ```
 
 ---
