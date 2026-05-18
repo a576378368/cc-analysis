@@ -33,20 +33,22 @@
   border-left-color: #F44336;
 }
 
-/* 表格样式 */
+/* 表格样式 - 简化以确保兼容性 */
 .md-typeset table:not([class]) {
-  border-radius: 8px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .md-typeset table:not([class]) th {
-  background-color: #2196F3;
-  color: white;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  padding: 0.75em 1em;
 }
 
-[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
-  background-color: #1565C0;
+.md-typeset table:not([class]) td {
+  border: 1px solid #e0e0e0;
+  padding: 0.5em 1em;
 }
 
 /* Mermaid 图表 */
